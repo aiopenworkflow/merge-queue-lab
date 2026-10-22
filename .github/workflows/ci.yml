@@ -1,0 +1,34 @@
+name: Synthetic compatibility CI
+on:
+  pull_request:
+  merge_group:
+    types: [checks_requested]
+permissions:
+  contents: read
+jobs:
+  compatibility:
+    name: compatibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Record candidate evidence
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action }}
+          EVENT_SHA: ${{ github.sha }}
+          EVENT_REF: ${{ github.ref }}
+        run: |
+          printf 'event=%s action=%s sha=%s ref=%s\n' "$EVENT_NAME" "$EVENT_ACTION" "$EVENT_SHA" "$EVENT_REF"
+          git log -1 --format='%H %P'
+          cat config.json feature.json
+          python3 - <<'PYCODE'
+          import json, os
+          e = json.load(open(os.environ['GITHUB_EVENT_PATH']))
+          print(json.dumps({k:e.get(k) for k in ['action','merge_group','number']}, sort_keys=True))
+          PYCODE
+      - name: Bounded observation window for queue only
+        if: github.event_name == 'merge_group'
+        run: sleep 45
+      - name: Assert real content compatibility
+        run: python3 test.py
