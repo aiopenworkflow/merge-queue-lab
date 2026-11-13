@@ -1,0 +1,19 @@
+name: QA second reviewer
+# QA-only helper for the disposable lab: each push to qa-bot posts the review described in qa-review.json
+# as github-actions[bot], so the follow-through tests have a reviewer other than the author.
+on:
+  push:
+    branches: [qa-bot]
+permissions:
+  pull-requests: write
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PR=$(jq -r .pr qa-review.json); jq '{event, body} + (if .commit_id then {commit_id} else {} end)' qa-review.json > req.json
+          gh api "repos/${{ github.repository }}/pulls/$PR/reviews" --input req.json
