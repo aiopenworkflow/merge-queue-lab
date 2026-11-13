@@ -1,1 +1,1 @@
-{"pr": 16, "event": "REQUEST_CHANGES", "body": "The evidence is fine. You should rename the handler to createRefund."}
+{"pr": 16, "event": "REQUEST_CHANGES", "body": "Please post staging evidence for GET /v1/refunds/:id. Also you should handle a missing id."}
