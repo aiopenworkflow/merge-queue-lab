@@ -1,0 +1,2 @@
+app:
+  image: registry.example/lab:v0.1.0-cb9a876
