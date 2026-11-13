@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qa-exports-config
+data:
+  QA_C_TIMEOUT_MS: "500"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: qa-exports-upstream
+type: Opaque
+stringData:
+  QA_C_UPSTREAM_TOKEN: "set-in-cluster"
