@@ -9,3 +9,5 @@ The required `compatibility` job runs on both `pull_request` and `merge_group: c
 ## Modes
 
 The synthetic config supports modes v1 and v2; test.py rejects an enabled feature that lacks support for the active mode.
+
+Run the offline tests from the repository root with `python3 test.py`.
