@@ -6,6 +6,8 @@ Base: mode v1, feature disabled. PR A switches mode to v2. PR B enables a featur
 
 The required `compatibility` job runs on both `pull_request` and `merge_group: checks_requested`. It checks actual fixture content, records the event and checkout SHA, and waits 45 seconds on merge groups solely to allow observation. There are no deployments, secrets, generated success statuses, or skipped assertions.
 
+To run the offline tests locally, run `python3 test.py` from the repository root, the same command the `compatibility` job uses.
+
 ## Modes
 
 The synthetic config supports modes v1 and v2; test.py rejects an enabled feature that lacks support for the active mode.
